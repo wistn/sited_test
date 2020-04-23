@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="3" debug="1" engine="15">
+    <ua></ua>
+    <title>东方二次元</title>
+    <intro>动漫产业联盟 | Oriental ACG，正版授权，IP运营</intro>
+    <author>东方二次元</author>
+    <url>http://comic.oacg.cn</url>
+    <expr>\.oacg\.cn</expr>
+    <logo></logo>
+	<encode>utf-8</encode>
+	<main dtype="1">
+		<reward title="反馈" mail="seiya@noear.org">
+			<item txt="如果有问题，请用邮件反馈：" />
+			<item />
+			<item txt="seiya@noear.org"/>
+		</reward>
+
+
+		<home>
+        	<hots cache="1d" title="首页" method="get" parse="hots_parse" url="http://comic.oacg.cn" />
+			<tags title="标签">
+				<item title="恋爱" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=1&amp;pageidx=@page"/>
+				<item title="搞笑" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=2&amp;pageidx=@page"/>
+				<item title="魔幻" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=3&amp;pageidx=@page"/>
+				<item title="动作" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=4&amp;pageidx=@page"/>
+				<item title="科幻" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=5&amp;pageidx=@page"/>
+
+				<item title="生活" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=6&amp;pageidx=@page"/>
+				<item title="后宫" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=7&amp;pageidx=@page"/>
+				<item title="治愈" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=8&amp;pageidx=@page"/>
+				<item title="推理" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=9&amp;pageidx=@page"/>
+				<item title="恐怖" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=10&amp;pageidx=@page"/>
+
+				<item title="古风" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=11&amp;pageidx=@page"/>
+				<item title="耽美百合" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=12&amp;pageidx=@page"/>
+				<item title="少年" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=13&amp;pageidx=@page"/>
+				<item title="少女" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=14&amp;pageidx=@page"/>
+				<item title="校园" url="http://comic.oacg.cn/index.php?m=Index&amp;a=type_theme&amp;theme_id=15&amp;pageidx=@page"/>
+			</tags>
+		</home>
+		<search cache="1d"  method="get" parse="search_parse" url="http://comic.oacg.cn/index.php?m=Index&amp;a=searchlistdata&amp;tag=@key"/>
+		<tag     cache="0"  method="get" parse="tag_parse" header="Accept=*/*;X-Requested-With=XMLHttpRequest" addPage="-1" />
+
+        <book    cache="1d" method="get" parse="book_parse" expr="manga-" />
+        <section cache="1"  method="get" parse="section_parse" header="cookie;referer"  />
+    </main>
+    <jscript>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+
+function urla(u) {
+	var host = "http://comic.oacg.cn";
+	if (u.indexOf("http")<0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.in-sign-list li').each(function(){
+		var slf  = $(this);
+
+		var img = slf.find('img');
+
+		var bm = {};
+		bm.name = img.parent().attr('title');
+		bm.url  = urla(img.parent().attr('href'));
+		bm.logo = urla(img.attr('src'));
+
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+
+function search_parse(url,html) {
+    var jObj = JSON.parse(html);
+	var jList = jObj.comic_arr;
+
+	var list = [];
+
+	jList.forEach(function(item){
+		var bm = {};
+		bm.name = item.comic_name;
+		bm.url = 'http://comic.oacg.cn/index.php?m=Index&a=comicinfo&comic_id=' + item.id;
+		bm.logo = 'http://le.cdn.pc.comicq.cn' + item.comic_pic_240_320;
+
+		bm.author = item.painter_user_nickname;
+		bm.newSection = item.comic_last_orderidx;
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function tag_parse(url,html){
+	var jObj = JSON.parse(html);
+	var jList = jObj.comic_arr;
+
+	var list = [];
+
+	jList.forEach(function(item){
+		var bm = {};
+		bm.name = item.comic_name;
+		bm.url = 'http://comic.oacg.cn/index.php?m=Index&a=comicinfo&comic_id=' + item.id;
+		bm.logo = 'http://le.cdn.pc.comicq.cn' + item.comic_pic_240_320;
+
+		bm.author = item.painter_user_nickname;
+		bm.newSection = item.comic_last_orderidx;
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+
+    var data={};
+
+    data.name = $('h2.works-intro-title').text().trim();
+    data.author = $('.works-intro-digi  em').eq(0).text().trim();
+    if(data.author){
+		data.author = data.author.split('/')[0];
+	}
+
+    data.logo = $('.works-cover img').attr('src');
+    data.intro = $('p.works-intro-short').text();
+    data.updateTime = "";
+    data.sections = [];
+
+    $('.works-chapter-list span>a').each(function(){
+	    var al = $(this);
+
+	    if(al.attr('href')){
+		    var sm = {url:urla(al.attr('href')),name:al.text()};
+
+			data.sections.splice(0, 0, sm);
+		}
+    });
+
+    return JSON.stringify(data);
+}
+
+
+function section_parse(url,html) {
+	var $ = cheerio.load(html);
+
+    var list = [];
+
+	$('#page_area img').each(function(){
+		var al = $(this);
+		list.push(al.attr('data-original'));
+	});
+
+    return JSON.stringify(list);
+}
+
+
+]]>
+		</code>
+    </jscript>
+</site>

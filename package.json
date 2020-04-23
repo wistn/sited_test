@@ -1,0 +1,48 @@
+{
+    "name": "sited_test",
+    "version": "1.0.0",
+    "main": "index.js",
+    "bin": {
+        "sited_test": "bin.js"
+    },
+    "scripts": {
+        "test": "node --unhandled-rejections=strict demo.js",
+        "clean": "rimraf sited sited_*.txt logcat_stdout.txt",
+        "lint": "./node_modules/.bin/eslint '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js'",
+        "listen_format": "onchange '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js' -- prettier --write {{changed}}",
+        "binWithoutArgv": "node bin.js",
+        "myrun": "node --unhandled-rejections=strict myrun.js"
+    },
+    "keywords": [
+        "sited",
+        "plugin",
+        "test",
+        "ddcat"
+    ],
+    "author": "wistn <wistn@qq.com> (https://github.com/wistn)",
+    "license": "Apache-2.0",
+    "description": "SiteD Engine for javascript version, SiteD plugin testing tool, for SiteD developers testing their own plugins on computer/desktop platform.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wistn/sited_test.git"
+    },
+    "homepage": "https://github.com/wistn/sited_test",
+    "dependencies": {
+        "async": "^3.2.0",
+        "axios": "^0.19.2",
+        "cheerio": "^1.0.0-rc.3",
+        "iconv-lite": "^0.5.1",
+        "yargs": "^15.3.1"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "prettier": "^2.0.2"
+    }
+}
