@@ -176,7 +176,7 @@ Examples:
 
 ## 更新日志
 
-v1.1 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br />
+v1.2 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br />
 v1 发布
 
 ---

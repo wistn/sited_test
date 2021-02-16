@@ -176,7 +176,7 @@ Examples:
 
 ## ChangeLog
 
-v1.1 Many improvements, change to use async/await syntax, support section node from book[8] node.<br />
+v1.2 Many improvements, change to use async/await syntax, support section node from book[8] node.<br />
 v1 Release
 
 ---
