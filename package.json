@@ -32,6 +32,7 @@
         "axios": "^0.21.1",
         "cheerio": "^1.0.0-rc.5",
         "iconv-lite": "^0.5.2",
+        "qs": "^6.9.6",
         "yargs": "^15.4.1"
     },
     "devDependencies": {
