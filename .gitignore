@@ -1,0 +1,14 @@
+/*
+!.gitignore
+!/bin.js
+!/demo.js
+!/demo.sited.xml
+!/index.js
+!/LICENSE
+!/package-lock.json
+!/package.json
+!/README_CN.md
+!/README.md
+!/lib
+/lib/*
+!/lib/*.js

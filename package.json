@@ -6,7 +6,7 @@
         "sited_test": "bin.js"
     },
     "scripts": {
-        "test": "node --unhandled-rejections=strict demo.js",
+        "test": "node demo.js",
         "clean": "rimraf sited sited_*.txt logcat_stdout.txt",
         "lint": "./node_modules/.bin/eslint '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js'",
         "listen_format": "onchange '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js' -- prettier --write {{changed}}",
@@ -29,20 +29,20 @@
     "homepage": "https://github.com/wistn/sited_test",
     "dependencies": {
         "async": "^3.2.0",
-        "axios": "^0.19.2",
-        "cheerio": "^1.0.0-rc.3",
-        "iconv-lite": "^0.5.1",
-        "yargs": "^15.3.1"
+        "axios": "^0.21.1",
+        "cheerio": "^1.0.0-rc.5",
+        "iconv-lite": "^0.5.2",
+        "yargs": "^15.4.1"
     },
     "devDependencies": {
-        "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.10.1",
-        "eslint-config-standard": "^14.1.1",
-        "eslint-plugin-import": "^2.20.1",
-        "eslint-plugin-node": "^11.0.0",
-        "eslint-plugin-prettier": "^3.1.2",
+        "eslint": "^7.19.0",
+        "eslint-config-prettier": "^7.2.0",
+        "eslint-config-standard": "^16.0.2",
+        "eslint-plugin-standard": "^5.0.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-standard": "^4.0.1",
-        "prettier": "^2.0.2"
+        "prettier": "^2.2.1"
     }
 }

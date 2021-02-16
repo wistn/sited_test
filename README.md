@@ -1,6 +1,6 @@
 # sited_test
 
-SiteD Engine for javascript version, SiteD plugin testing tool, for SiteD developers testing their own plugins on computer/desktop platform.
+SiteD Engine for Node JavaScript version, SiteD plugin testing tool, for SiteD developers testing their own plugins on computer/desktop platform.
 
 [ [中文说明](README_CN.md)]
 
@@ -8,11 +8,11 @@ SiteD Engine for javascript version, SiteD plugin testing tool, for SiteD develo
 
 ## Features
 
--   To automatically test SiteD plugin
+-   To automatically test SiteD plugin on Windows/Linux/macOS
 -   Support `schema0/1/2`
--   Support running `buildUrl` `parseUrl`(`CALL::`) `parse`(`get`/`post`/`@null`) `require`(include online js library)
--   Support `header`(`cookie`/`referer`) `ua` configuration
--   Support `hots` `updates` `tags` `tag`(`subtag`) `search` `book[12345678]`(`sections`) `section[123]` node
+-   Support running `buildUrl`, `parseUrl(CALL::)`, `parse(get/post/@null)`, `require(include online js library)`
+-   Support `header(cookie/referer)`, `ua` configurations
+-   Support `hots`, `updates`, `tags`, `tag(subtag)`, `search`, `book[12345678](sections)`, `section[123]` nodes
 
 ---
 
@@ -32,12 +32,15 @@ sited_test(
     key: string,
     callback: (
         home_test?: (
-            cback: (doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => void) => void) => void
-        ) => void,
-        search_test?: (cb: () => void) => void,
-        book_test?: (bookUrl: string, from_where: 'from_OuterValue', cb: () => void) => void
-    ) => void
-): void;
+            cback: (
+                doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => Promise<void>
+                ) => Promise<void>
+            ) => Promise<void>
+        ) => Promise<void>,
+        search_test?: (cb: () => Promise<void>) => Promise<void>,
+        book_test?: (bookUrl: string, from_where: 'from_外部传值', cb: () => Promise<void>) => Promise<void>
+    ) => Promise<void>
+): Promise<void>;
 ```
 
 ---
@@ -54,33 +57,29 @@ A. Uses Node to run a js script like demo.js which requires the API within the s
 
 ```js
 // demo.js, has written file path of .sited or .sited.xml
-var sited_test = require('./index.js');
-var async = require('async');
-var path = require('path');
-var sitedPath = path.join(__dirname, 'demo.sited.xml');
-var key = '我们';
-sited_test(sitedPath, key, (home_test, search_test, book_test) => {
-    // let bookUrl = 'http:// url argument of book node function';
-    async.series(
-        [
-            // async.apply(book_test, bookUrl, 'from_OuterValue'),
-            (asyncCallback) => {
-                home_test((doTest) => {
-                    async.series(
-                        [
-                            async.apply(doTest, 'hots'),
-                            async.apply(doTest, 'updates'),
-                            async.apply(doTest, 'tags')
-                        ],
-                        () => asyncCallback()
-                    );
-                });
-            },
-            async.apply(search_test)
-        ],
-        () => console.log('结束测试本插件')
+async () => {
+    var sited_test = require('./index');
+    var path = require('path');
+    var sitedPath = path.join(__dirname, 'demo.sited.xml');
+    var key = '我们';
+    await sited_test(
+        sitedPath,
+        key,
+        async (home_test, search_test, book_test) => {
+            async function cb() {}
+            // let bookUrl = 'http:// book节点函数的url参数';
+            // await book_test(bookUrl, 'from_外部传值', cb);
+            async function cback(doTest) {
+                await doTest('hots', cb);
+                await doTest('updates', cb);
+                await doTest('tags', cb);
+            }
+            await home_test(cback);
+            await search_test(cb);
+            console.log('-----结束测试本插件-----\n');
+        }
     );
-});
+};
 ```
 
 ```bash
@@ -109,7 +108,7 @@ a. You can start Code Runner when editor focuses sited plugin file, after config
 // replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If (key) be deleted, that built-in keyword of bin.js would be used.
 ```
 
-or b. You can start debugging (sited_test) when editor focuses sited plugin file, after adding a debug configure to execute as node command below, test the plugin directly, need not to write the plugin path, it will be identified by \${file}.
+or b. You can start debugging (sited_test) when editor focuses sited plugin file, after adding a debug configure to execute as node command below, test the plugin directly, need not to write the plugin path, it will be identified by \${file}.If you want to VS Code set breakpoints and pause in js code of plugin xml file, must add `debugger;` statements outside global functions and in every function you want to pause.
 
 ```json
 "launch": {
@@ -123,16 +122,13 @@ or b. You can start debugging (sited_test) when editor focuses sited plugin file
             "runtimeArgs": [
                 "--unhandled-rejections=strict"
             ],
-            "args": [
-                "${file}",
-                "关键词"
-            ]
+            "args": ["${file}", "关键词"]
         }
     ]
 }
 ```
 
-replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If `,"关键词"` be deleted, that built-in keyword of bin.js would be used.
+replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If `"关键词"` was deleted, that built-in keyword of bin.js would be used.
 
 > #### or 2. After npm installs the project globally as `npm i sited_test -g`
 >
@@ -151,6 +147,7 @@ Options:
   --version  Show version number
   --help     Show help
   --demo     Tests a demo sited plugin
+
 Examples:
   sited_test /path/to/sited.sited.xml  #Outputs nodes' data to console on Nodejs.
 ```
@@ -167,29 +164,32 @@ Examples:
 
 ## Dependencies
 
--   [nodejs](https://nodejs.org/en/)
+-   [Nodejs](https://nodejs.org/en/) 12 or above, must support ES2018+
 
 ---
 
 ## Todo:
 
--   Support login node, section node from book[8] node.
+-   Support login node
 
 ---
 
 ## ChangeLog
 
+v1.1 Many improvements, change to use async/await syntax, support section node from book[8] node.<br />
 v1 Release
 
 ---
 
 ## SpecialThanks
 
-### The lib library is totally translated from big parts of Noear's [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA source code to Nodejs language.Thank you!
+### The lib library(excludes main_res_raw_xx.js) is totally translated from big parts of Noear's open source [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA code to JavaScript language by me. Thank you!
 
 ---
 
 ## Links
+
+-   [SiteD plugin center](http://sited.noear.org/): Official SiteD plugin center.
 
 -   [ddcat_plugin_develop](https://www.kancloud.cn/magicdmer/ddcat_plugin_develop): Knowledge about sited plugin development.
 

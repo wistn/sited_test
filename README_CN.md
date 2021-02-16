@@ -1,6 +1,6 @@
 # sited_test
 
-SiteD 引擎 js 版、SiteD 插件测试工具，用于多多猫插件者在电脑桌面平台测试自己的插件。
+SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者在电脑/桌面平台测试自己的插件。
 
 [ [Readme-EN](README.md)]
 
@@ -8,15 +8,15 @@ SiteD 引擎 js 版、SiteD 插件测试工具，用于多多猫插件者在电�
 
 ## 特性
 
--   自动测试 SiteD 插件
+-   在 Windows/Linux/macOS 上自动测试 SiteD 插件
 -   支持 `schema0/1/2`
--   支持运行 `buildUrl` `parseUrl`(`CALL::`) `parse`(`get`/`post`/`@null`) `require`(含网络 js 库)
--   支持 `header`(`cookie`/`referer`) `ua` 配置
--   支持 `hots` `updates` `tags` `tag`(`subtag`) `search` `book[12345678]`(`sections`) `section[123]` 节点
+-   支持运行 `buildUrl`, `parseUrl(CALL::)`, `parse(get/post/@null)`, `require(含网络 js 库)`
+-   支持 `header(cookie/referer)`, `ua` 配置
+-   支持 `hots`, `updates`, `tags`, `tag(subtag)`, `search`, `book[12345678](sections)`, `section[123]` 节点
 
 ---
 
-## API接口
+## 应用接口
 
 ```js
 /**
@@ -32,17 +32,20 @@ sited_test(
     key: string,
     callback: (
         home_test?: (
-            cback: (doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => void) => void) => void
-        ) => void,
-        search_test?: (cb: () => void) => void,
-        book_test?: (bookUrl: string, from_where: 'from_外部传值', cb: () => void) => void
-    ) => void
-): void;
+            cback: (
+                doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => Promise<void>
+                ) => Promise<void>
+            ) => Promise<void>
+        ) => Promise<void>,
+        search_test?: (cb: () => Promise<void>) => Promise<void>,
+        book_test?: (bookUrl: string, from_where: 'from_外部传值', cb: () => Promise<void>) => Promise<void>
+    ) => Promise<void>
+): Promise<void>;
 ```
 
 ---
 
-### [[特性](#特性)|[API接口](#API接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[更新日志](#更新日志)|[致谢](#致谢)|[友链](#友链)]
+### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[更新日志](#更新日志)|[致谢](#致谢)|[友链](#友链)]
 
 ---
 
@@ -54,33 +57,29 @@ A. 在 sited_test 文件夹通过 Node 运行像 demo.js 般调用 API 接口的
 
 ```js
 // demo.js文件，已经写了 .sited 或 .sited.xml 文件路径
-var sited_test = require('./index.js');
-var async = require('async');
-var path = require('path');
-var sitedPath = path.join(__dirname, 'demo.sited.xml');
-var key = '我们';
-sited_test(sitedPath, key, (home_test, search_test, book_test) => {
-    // let bookUrl = 'http:// book节点函数的url参数';
-    async.series(
-        [
-            // async.apply(book_test, bookUrl, 'from_OuterValue'),
-            (asyncCallback) => {
-                home_test((doTest) => {
-                    async.series(
-                        [
-                            async.apply(doTest, 'hots'),
-                            async.apply(doTest, 'updates'),
-                            async.apply(doTest, 'tags')
-                        ],
-                        () => asyncCallback()
-                    );
-                });
-            },
-            async.apply(search_test)
-        ],
-        () => console.log('结束测试本插件')
+async () => {
+    var sited_test = require('./index');
+    var path = require('path');
+    var sitedPath = path.join(__dirname, 'demo.sited.xml');
+    var key = '我们';
+    await sited_test(
+        sitedPath,
+        key,
+        async (home_test, search_test, book_test) => {
+            async function cb() {}
+            // let bookUrl = 'http:// book节点函数的url参数';
+            // await book_test(bookUrl, 'from_外部传值', cb);
+            async function cback(doTest) {
+                await doTest('hots', cb);
+                await doTest('updates', cb);
+                await doTest('tags', cb);
+            }
+            await home_test(cback);
+            await search_test(cb);
+            console.log('-----结束测试本插件-----\n');
+        }
     );
-});
+};
 ```
 
 ```bash
@@ -109,7 +108,7 @@ a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运
 // 把 /path/to/node_modules/sited_test/bin.js 替换为bin.js实际路径。如果删除(key)，会使用 bin.js 内置的关键词
 ```
 
-或者 b. 增加新的调试配置通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动调试(sited_test)，直接测试插件，不需要填写插件路径，会通过 \${file} 识别。
+或者 b. 增加新的调试配置通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动调试(sited_test)，直接测试插件，不需要填写插件路径，会通过 \${file} 识别。想要 VS Code 对插件 xml 文件里面的 js 代码打断点和暂停，须要在全局函数外面和每一个想暂停的函数里添加 `debugger;` 声明。
 
 ```json
 "launch": {
@@ -123,16 +122,13 @@ a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运
             "runtimeArgs": [
                 "--unhandled-rejections=strict"
             ],
-            "args": [
-                "${file}",
-                "关键词"
-            ]
+            "args": ["${file}", "关键词"]
         }
     ]
 }
 ```
 
-把 /path/to/node_modules/sited_test/bin.js 替换为 bin.js 实际路径。如果删除 `,"关键词"` ，会使用 bin.js 内置的关键词
+把 /path/to/node_modules/sited_test/bin.js 替换为 bin.js 实际路径。如果删除 `"关键词"` ，会使用 bin.js 内置的关键词
 
 > #### 或者 2. 如下在 npm 全局安装项目之后 `npm i sited_test -g`
 >
@@ -151,6 +147,7 @@ Options:
   --version  Show version number
   --help     Show help
   --demo     Tests a demo sited plugin
+
 Examples:
   sited_test /path/to/sited.sited.xml  #Outputs nodes' data to console on Nodejs.
 ```
@@ -161,35 +158,38 @@ Examples:
 
 -   `npm run test`: 在命令行界面项目文件夹下，运行该代码，可以测试样本 sited 插件并显示结果在控制台
 -   `npm run clean`: 在命令行界面项目文件夹下，运行该代码，可以删除运行项目后生成的日志文件和缓存文件夹，前提要已通过 `npm i rimraf -g` 安装 rimraf 命令
--   控制项目文件夹下 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 生成的配置，见 index.js 文件.
+-   控制项目文件夹下 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 生成的配置，见 index.js 文件
 
 ---
 
 ## 依赖
 
--   [nodejs](https://nodejs.org/en/)
+-   [Nodejs](https://nodejs.org/en/) 12 或以上，须要支持 ES2018+
 
 ---
 
 ## 待办:
 
--   支持 login 节点，从 book[8] 跳转到 section 节点.
+-   支持 login 节点
 
 ---
 
 ## 更新日志
 
+v1.1 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br />
 v1 发布
 
 ---
 
 ## 致谢
 
-### 里面 lib 库是完全将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 Nodejs 语言。感谢！
+### 里面 lib 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
 
 ---
 
 ## 友链
+
+-   [SiteD plugin center](http://sited.noear.org/) SiteD 插件中心官方版
 
 -   [ddcat_plugin_develop](https://www.kancloud.cn/magicdmer/ddcat_plugin_develop) 多多猫插件开发指南，关于多多猫插件开发相关知识
 
