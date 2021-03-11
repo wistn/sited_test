@@ -1,0 +1,37 @@
+name: github release and Node.js Package
+
+on:
+    workflow_dispatch:
+    push:
+        tags: ['*']
+jobs:
+    release_and_publish:
+        name: release and publish
+        runs-on: ubuntu-latest
+        env:
+            TAG_NAME: 'echo $GITHUB_REF | cut -d / -f3'
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - name: build and new_section
+              id: build_and_new_section
+              run: |
+                  npm ci
+                  npm pack
+                  node .github/workflows/changelog_new_section.js
+                  echo "v_tag=v$(cat version)" >> $GITHUB_ENV
+            - name: release
+              uses: softprops/action-gh-release@v1
+            #   if: startsWith(github.ref, 'refs/tags/')
+              with:
+                  body_path: new_section
+                  tag_name: ${{ env.v_tag }}
+                  files: |
+                      *.tgz
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

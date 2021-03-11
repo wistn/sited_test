@@ -31,55 +31,58 @@ sited_test(
     sitedPath: string,
     key: string,
     callback: (
-        home_test?: (
+        home_test: (
             cback: (
                 doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => Promise<void>
                 ) => Promise<void>
             ) => Promise<void>
         ) => Promise<void>,
-        search_test?: (cb: () => Promise<void>) => Promise<void>,
-        book_test?: (bookUrl: string, from_where: 'from_外部传值', cb: () => Promise<void>) => Promise<void>
+        search_test: (cb: () => Promise<void>) => Promise<void>,
+        book_test: (bookUrl: string, from_where: 'from_外部传值', cb: () => Promise<void>) => Promise<void>,
+        tag_test: (tagUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>,
+        section_test: (sectionUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>,
+        subtag_test: (subtagUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>
     ) => Promise<void>
-): Promise<void>;
+): Promise<void>
 ```
 
 ---
 
-### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[更新日志](#更新日志)|[致谢](#致谢)|[友链](#友链)]
-
----
+### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[致谢](#致谢)|[友链](#友链)|[CHANGELOG](CHANGELOG.md)]
 
 ## 使用
 
-> #### 1.如下在 npm 本地安装项目之后 `npm i sited_test --production`
+> #### 1. 以 `npm i sited_test` 在 npm 本地安装项目之后
 
-A. 在 sited_test 文件夹通过 Node 运行像 demo.js 般调用 API 接口的 js 脚本：
+A. 在 sited_test 文件夹里通过 Node 运行像 demo.js 般调用 API 接口的 js 脚本：
 
 ```js
 // demo.js文件，已经写了 .sited 或 .sited.xml 文件路径
-async () => {
-    var sited_test = require('./index');
+(async () => {
+    var { sited_test, LogWriter } = require('./index');
     var path = require('path');
-    var sitedPath = path.join(__dirname, 'demo.sited.xml');
+    var sitedPath = path.resolve(__dirname, 'demo.sited.xml');
     var key = '我们';
     await sited_test(
         sitedPath,
         key,
-        async (home_test, search_test, book_test) => {
-            async function cb() {}
-            // let bookUrl = 'http:// book节点函数的url参数';
-            // await book_test(bookUrl, 'from_外部传值', cb);
+        async (home_test, search_test, book_test, ...args) => {
+            async function cb(...args) {}
             async function cback(doTest) {
-                await doTest('hots', cb);
-                await doTest('updates', cb);
-                await doTest('tags', cb);
+                if (doTest) {
+                    await doTest('hots', cb);
+                    await doTest('updates', cb);
+                    await doTest('tags', cb);
+                }
             }
             await home_test(cback);
             await search_test(cb);
-            console.log('-----结束测试本插件-----\n');
+            // var bookUrl = 'http://... book节点函数的url参数如已收藏漫画链接';
+            // await book_test(bookUrl, 'from_外部传值', cb);
         }
     );
-};
+    LogWriter.tryClose();
+})();
 ```
 
 ```bash
@@ -97,13 +100,13 @@ node /path/to/node_modules/sited_test/bin.js <sitedPath> [<key>]
 # key(可选): 用于在搜索节点上搜索的关键词字符串，如果没输入，会使用 bin.js 内置的关键词
 ```
 
-或者 C. 其实，在 VS Code 上编辑 sited 插件文件时用 [Code Runner 插件](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)或者内置的调试器来调用 Node 是很快的。
+或者 C. 其实，在 VS Code 上编辑 sited 插件文件时用 [Code Runner 插件](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) 或者内置的调试器来调用 Node 是很快的。
 
 a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动 Code Runner，直接测试插件，不需要填写插件路径，会通过 \$fullFileName 识别。
 
 ```json
 "code-runner.executorMapByGlob": {
-    "*.{sited,sited.xml}": "node --unhandled-rejections=strict /path/to/node_modules/sited_test/bin.js $fullFileName key"
+    "*.{sited,sited.xml}": "node /path/to/node_modules/sited_test/bin.js $fullFileName key"
 }
 // 把 /path/to/node_modules/sited_test/bin.js 替换为bin.js实际路径。如果删除(key)，会使用 bin.js 内置的关键词
 ```
@@ -119,18 +122,15 @@ a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运
             "request": "launch",
             "name": "sited_test",
             "program": "/path/to/node_modules/sited_test/bin.js",
-            "runtimeArgs": [
-                "--unhandled-rejections=strict"
-            ],
-            "args": ["${file}", "关键词"]
+            "args": ["${file}", "搜索词"]
         }
     ]
 }
 ```
 
-把 /path/to/node_modules/sited_test/bin.js 替换为 bin.js 实际路径。如果删除 `"关键词"` ，会使用 bin.js 内置的关键词
+把 /path/to/node_modules/sited_test/bin.js 替换为 bin.js 实际路径。如果删除 `"搜索词"` ，会使用 bin.js 内置的关键词
 
-> #### 或者 2. 如下在 npm 全局安装项目之后 `npm i sited_test -g`
+> #### 或者 2. 以 `npm i sited_test -g` 在 npm 全局安装项目之后
 >
 > 在命令行界面单独输入 `sited_test` 会看到:
 
@@ -158,7 +158,7 @@ Examples:
 
 -   `npm run test`: 在命令行界面项目文件夹下，运行该代码，可以测试样本 sited 插件并显示结果在控制台
 -   `npm run clean`: 在命令行界面项目文件夹下，运行该代码，可以删除运行项目后生成的日志文件和缓存文件夹，前提要已通过 `npm i rimraf -g` 安装 rimraf 命令
--   控制项目文件夹下 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 生成的配置，见 index.js 文件
+-   控制项目文件夹下'files'文件夹下 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 生成的配置，见 index.js 文件
 
 ---
 
@@ -168,7 +168,7 @@ Examples:
 
 ---
 
-## 待办:
+## 待办
 
 -   支持 login 节点
 
@@ -176,7 +176,8 @@ Examples:
 
 ## 更新日志
 
-v1.2 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br />
+v2.0 修复bug，修改 API ，会向下不兼容！<br>
+v1.2 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br>
 v1 发布
 
 ---
@@ -184,8 +185,6 @@ v1 发布
 ## 致谢
 
 ### 里面 lib 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
-
----
 
 ## 友链
 

@@ -7,11 +7,11 @@
     },
     "scripts": {
         "test": "node demo.js",
-        "clean": "rimraf sited sited_*.txt logcat_stdout.txt",
+        "clean": "rimraf files/sited files/sited_*.txt files/logcat_stdout.txt",
         "lint": "./node_modules/.bin/eslint '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js'",
         "listen_format": "onchange '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js' -- prettier --write {{changed}}",
         "binWithoutArgv": "node bin.js",
-        "myrun": "node --unhandled-rejections=strict myrun.js"
+        "myrun": "node myrun.js"
     },
     "keywords": [
         "sited",
@@ -27,8 +27,20 @@
         "url": "https://github.com/wistn/sited_test.git"
     },
     "homepage": "https://github.com/wistn/sited_test",
+    "files": [
+        "/files/.gitignore",
+        "/lib/*.js",
+        "/bin.js",
+        "/demo.js",
+        "/demo.sited.xml",
+        "/index.js",
+        "/package*json",
+        ".gitignore",
+        "CHANGELOG.md",
+        "LICENSE",
+        "README*"
+    ],
     "dependencies": {
-        "async": "^3.2.0",
         "axios": "^0.21.1",
         "cheerio": "^1.0.0-rc.5",
         "iconv-lite": "^0.5.2",
@@ -36,14 +48,14 @@
         "yargs": "^15.4.1"
     },
     "devDependencies": {
-        "eslint": "^7.19.0",
+        "eslint": "^7.21.0",
         "eslint-config-prettier": "^7.2.0",
         "eslint-config-standard": "^16.0.2",
-        "eslint-plugin-standard": "^5.0.0",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^3.3.1",
-        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-standard": "^5.0.0",
         "prettier": "^2.2.1"
     }
 }

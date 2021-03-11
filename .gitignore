@@ -1,14 +1,23 @@
-/*
-!.gitignore
+*
+!/.github/
+!/.github/**
+!/files/
+!/lib/
+!/lib/*.js
 !/bin.js
 !/demo.js
 !/demo.sited.xml
 !/index.js
-!/LICENSE
 !/package-lock.json
 !/package.json
-!/README_CN.md
-!/README.md
-!/lib
-/lib/*
-!/lib/*.js
+
+# keep it under each dir
+!.gitignore
+!CHANGELOG.md
+!LICENSE
+!README_CN.*
+!README.*
+# ignore it under each dir
+.DS_Store
+
+# notice: "/xx/" of package.json#files keeps all files in "xx" directory when npm pack, you need to add .gitignore in "xx" if you want to ignore some files in it.

@@ -31,55 +31,58 @@ sited_test(
     sitedPath: string,
     key: string,
     callback: (
-        home_test?: (
+        home_test: (
             cback: (
                 doTest: (nodeName: 'hots' | 'updates' | 'tags', cb: () => Promise<void>
                 ) => Promise<void>
             ) => Promise<void>
         ) => Promise<void>,
-        search_test?: (cb: () => Promise<void>) => Promise<void>,
-        book_test?: (bookUrl: string, from_where: 'from_外部传值', cb: () => Promise<void>) => Promise<void>
+        search_test: (cb: () => Promise<void>) => Promise<void>,
+        book_test: (bookUrl: string, from_where: 'from_externalValue', cb: () => Promise<void>) => Promise<void>,
+        tag_test: (tagUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>,
+        section_test: (sectionUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>,
+        subtag_test: (subtagUrl: string, from_where: string, cb: () => Promise<void>) => Promise<void>
     ) => Promise<void>
-): Promise<void>;
+): Promise<void>
 ```
 
 ---
 
-### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Todo](#Todo)|[ChangeLog](#ChangeLog)|[SpecialThanks](#SpecialThanks)|[Links](#Links)]
-
----
+### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Todo](#Todo)|[SpecialThanks](#SpecialThanks)|[Links](#Links)|[CHANGELOG](CHANGELOG.md)]
 
 ## Usage
 
-> #### 1.After npm installs the project locally as `npm i sited_test --production`
+> #### 1. After npm installs the project locally as `npm i sited_test`
 
 A. Uses Node to run a js script like demo.js which requires the API within the sited_test directory.
 
 ```js
 // demo.js, has written file path of .sited or .sited.xml
-async () => {
-    var sited_test = require('./index');
+(async () => {
+    var { sited_test, LogWriter } = require('./index');
     var path = require('path');
-    var sitedPath = path.join(__dirname, 'demo.sited.xml');
-    var key = '我们';
+    var sitedPath = path.resolve(__dirname, 'demo.sited.xml');
+    var key = 'we';
     await sited_test(
         sitedPath,
         key,
-        async (home_test, search_test, book_test) => {
-            async function cb() {}
-            // let bookUrl = 'http:// book节点函数的url参数';
-            // await book_test(bookUrl, 'from_外部传值', cb);
+        async (home_test, search_test, book_test, ...args) => {
+            async function cb(...args) {}
             async function cback(doTest) {
-                await doTest('hots', cb);
-                await doTest('updates', cb);
-                await doTest('tags', cb);
+                if (doTest) {
+                    await doTest('hots', cb);
+                    await doTest('updates', cb);
+                    await doTest('tags', cb);
+                }
             }
             await home_test(cback);
             await search_test(cb);
-            console.log('-----结束测试本插件-----\n');
+            // var bookUrl = 'http://... url argument of book node function such as the link in favorites';
+            // await book_test(bookUrl, 'from_externalValue', cb);
         }
     );
-};
+    LogWriter.tryClose();
+})();
 ```
 
 ```bash
@@ -103,7 +106,7 @@ a. You can start Code Runner when editor focuses sited plugin file, after config
 
 ```json
 "code-runner.executorMapByGlob": {
-    "*.{sited,sited.xml}": "node --unhandled-rejections=strict /path/to/node_modules/sited_test/bin.js $fullFileName key"
+    "*.{sited,sited.xml}": "node /path/to/node_modules/sited_test/bin.js $fullFileName key"
 }
 // replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If (key) be deleted, that built-in keyword of bin.js would be used.
 ```
@@ -119,16 +122,13 @@ or b. You can start debugging (sited_test) when editor focuses sited plugin file
             "request": "launch",
             "name": "sited_test",
             "program": "/path/to/node_modules/sited_test/bin.js",
-            "runtimeArgs": [
-                "--unhandled-rejections=strict"
-            ],
-            "args": ["${file}", "关键词"]
+            "args": ["${file}", "searchword"]
         }
     ]
 }
 ```
 
-replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If `"关键词"` was deleted, that built-in keyword of bin.js would be used.
+replace /path/to/node_modules/sited_test/bin.js with actual bin.js's path. If `"searchword"` was deleted, that built-in keyword of bin.js would be used.
 
 > #### or 2. After npm installs the project globally as `npm i sited_test -g`
 >
@@ -158,7 +158,7 @@ Examples:
 
 -   `npm run test`: Within the project directory on CLI, run this code, will test a demo sited plugin and output result to console.
 -   `npm run clean`: Within the project directory on CLI, run this code, will delete the log files and cache directory which made after running the project, only you had installed rimraf with `npm i rimraf -g` firstly.
--   Configuration which controls sited_log.txt/sited_error.txt/sited_print.txt and sited (cache directory) making under the project directory, see in index.js file.
+-   Configuration which controls sited_log.txt/sited_error.txt/sited_print.txt and sited (cache directory) making under the 'files' dir under project directory/, see in index.js file.
 
 ---
 
@@ -168,24 +168,15 @@ Examples:
 
 ---
 
-## Todo:
+## Todo
 
 -   Support login node
-
----
-
-## ChangeLog
-
-v1.2 Many improvements, change to use async/await syntax, support section node from book[8] node.<br />
-v1 Release
 
 ---
 
 ## SpecialThanks
 
 ### The lib library(excludes main_res_raw_xx.js) is totally translated from big parts of Noear's open source [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA code to JavaScript language by me. Thank you!
-
----
 
 ## Links
 
