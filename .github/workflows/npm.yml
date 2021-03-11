@@ -15,6 +15,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 12
+                  registry-url: https://registry.npmjs.org/
             - name: build and new_section
               id: build_and_new_section
               run: |
