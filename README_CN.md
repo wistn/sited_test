@@ -174,14 +174,6 @@ Examples:
 
 ---
 
-## 更新日志
-
-v2.0 修复bug，修改 API ，会向下不兼容！<br>
-v1.2 大量优化，改用语法 async/await，支持从 book[8] 跳转到 section 节点<br>
-v1 发布
-
----
-
 ## 致谢
 
 ### 里面 lib 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
