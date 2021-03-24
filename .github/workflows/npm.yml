@@ -1,4 +1,10 @@
-name: github release and Node.js Package
+#
+# Author:wistn
+# since:2021-03-11
+# LastEditors:Do not edit
+# LastEditTime:2021-03-14
+# Description: github release and Node.js Package
+#
 
 on:
     workflow_dispatch:
@@ -16,8 +22,8 @@ jobs:
               with:
                   node-version: 12
                   registry-url: https://registry.npmjs.org/
-            - name: build and new_section
-              id: build_and_new_section
+            - name: build_test_and_new_section
+              id: build_test_and_new_section
               run: |
                   npm ci
                   npm pack
@@ -25,7 +31,7 @@ jobs:
                   echo "v_tag=v$(cat version)" >> $GITHUB_ENV
             - name: release
               uses: softprops/action-gh-release@v1
-            #   if: startsWith(github.ref, 'refs/tags/')
+              #   if: startsWith(github.ref, 'refs/tags/')
               with:
                   body_path: new_section
                   tag_name: ${{ env.v_tag }}
@@ -33,6 +39,6 @@ jobs:
                       *.tgz
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - run: npm publish
+            - run: publish
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

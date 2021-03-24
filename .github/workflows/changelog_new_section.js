@@ -19,7 +19,7 @@ if (text.match(regexp)) {
     new_section = text.match(regexp)[2];
     /* like:
         ## [2.0.0]
-        'new_section'
+        'second_section'
         # v1
     */
 } else {

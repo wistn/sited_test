@@ -11,7 +11,7 @@
         "lint": "./node_modules/.bin/eslint '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js'",
         "listen_format": "onchange '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js' -- prettier --write {{changed}}",
         "binWithoutArgv": "node bin.js",
-        "myrun": "node myrun.js"
+        "mybin": "node mybin.js"
     },
     "keywords": [
         "sited",

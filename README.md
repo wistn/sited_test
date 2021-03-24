@@ -24,8 +24,8 @@ SiteD Engine for Node JavaScript version, SiteD plugin testing tool, for SiteD d
 * @param sitedPath: A string of .sited or .sited.xml file's path, advises to absolute path.
 * @param key: A keyword string that is used for searching on search node.
 * @param callback: Outputs the entrance test functions of home/search/book node.
-* @param nodeName@doTest@home_test: The string 'hots', 'updates' or 'tags', which starts test function of hots/updates/tag node.
-* @param bookUrl@book_test: url argument of book node function, for test of book node alone.
+* @param nodeName@doTest@home_test: The string 'hots', 'updates' or 'tags', which starts test function of hots/updates/tags node.
+* @param bookUrl@book_test: Url argument of book node function, for test of book node alone.
 */
 sited_test(
     sitedPath: string,
@@ -48,13 +48,13 @@ sited_test(
 
 ---
 
-### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Todo](#Todo)|[SpecialThanks](#SpecialThanks)|[Links](#Links)|[CHANGELOG](CHANGELOG.md)]
+### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Todo](#Todo)|[SpecialThanks](#SpecialThanks)|[Links](#Links)|[CHANGELOG.md](CHANGELOG.md)]
 
 ## Usage
 
 > #### 1. After npm installs the project locally as `npm i sited_test`
 
-A. Uses Node to run a js script like demo.js which requires the API within the sited_test directory.
+A. Uses Nodejs to run a js script like demo.js which requires the API within the sited_test directory.
 
 ```js
 // demo.js, has written file path of .sited or .sited.xml
@@ -100,7 +100,7 @@ node /path/to/node_modules/sited_test/bin.js <sitedPath> [<key>]
 # key(optional): A keyword string that is used for searching on search node, if not be inputted, built-in keyword of bin.js would be used.
 ```
 
-or C. By the way, using [Code Runner extension](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) or built-in debugger to call Node is quick, when you are editing sited plugin file on VS Code.
+or C. By the way, using [Code Runner extension](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) or built-in debugger to call Nodejs is quick, when you are editing sited plugin file on VS Code.
 
 a. You can start Code Runner when editor focuses sited plugin file, after configuring Code Runner to execute .sited and .sited.xml as node command below, test the plugin directly, need not to write the plugin path, it will be identified by \$fullFileName.
 
@@ -158,7 +158,7 @@ Examples:
 
 -   `npm run test`: Within the project directory on CLI, run this code, will test a demo sited plugin and output result to console.
 -   `npm run clean`: Within the project directory on CLI, run this code, will delete the log files and cache directory which made after running the project, only you had installed rimraf with `npm i rimraf -g` firstly.
--   Configuration which controls sited_log.txt/sited_error.txt/sited_print.txt and sited (cache directory) making under the 'files' dir under project directory/, see in index.js file.
+-   Configuration which controls making of sited_log.txt/sited_error.txt/sited_print.txt and sited (cache directory) under the 'files' dir beside this README file, see in index.js file.
 
 ---
 
@@ -176,7 +176,7 @@ Examples:
 
 ## SpecialThanks
 
-### The lib library(excludes main_res_raw_xx.js) is totally translated from big parts of Noear's open source [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA code to JavaScript language by me. Thank you!
+### The 'lib' library(excludes main_res_raw_xx.js) is totally translated from big parts of Noear's open source [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA code to JavaScript language by me. Thank you!
 
 ## Links
 
@@ -187,3 +187,5 @@ Examples:
 -   [DDCat SiteD](https://github.com/Yinr/DDCa-SiteD.vscode-ext): Syntax extension for VS Code, enabled .sited and .sided.xml files in sited language, support syntax highlight.
 
 -   [generators-sited-plugin](https://github.com/htynkn/generators-sited-plugin): Yeoman generator for sited plugin.
+
+-   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD Engine for Python version, SiteD plugin testing tool.

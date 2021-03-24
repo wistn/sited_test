@@ -2,7 +2,7 @@
 
 SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者在电脑/桌面平台测试自己的插件。
 
-[ [Readme-EN](README.md)]
+[ [README-EN](README.md)]
 
 ---
 
@@ -20,12 +20,12 @@ SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者�
 
 ```js
 /**
-* 在Nodejs环境输出节点数据到控制台
-* @param sitedPath: .sited或.sited.xml文件路径，建议填绝对路径
+* 在 Nodejs 环境输出节点数据到控制台
+* @param sitedPath: .sited或.sited.xml文件路径, 建议填绝对路径
 * @param key: 用于在搜索节点上搜索的关键词字符串
 * @param callback: 输出home/search/book节点的入口测试函数
-* @param nodeName@doTest@home_test: 字符串'hots', 'updates' 或者 'tags'，用于开始hots/updates/tags节点的测试函数
-* @param bookUrl@book_test: book节点函数的url参数，用于book节点单独测试
+* @param nodeName@doTest@home_test: 字符串 'hots', 'updates' 或者 'tags', 用于开始hots/updates/tags节点的测试函数
+* @param bookUrl@book_test: book节点函数的url参数, 用于book节点单独测试
 */
 sited_test(
     sitedPath: string,
@@ -48,13 +48,13 @@ sited_test(
 
 ---
 
-### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[致谢](#致谢)|[友链](#友链)|[CHANGELOG](CHANGELOG.md)]
+### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[致谢](#致谢)|[友链](#友链)|[CHANGELOG.md](CHANGELOG.md)]
 
 ## 使用
 
 > #### 1. 以 `npm i sited_test` 在 npm 本地安装项目之后
 
-A. 在 sited_test 文件夹里通过 Node 运行像 demo.js 般调用 API 接口的 js 脚本：
+A. 在 sited_test 文件夹里通过 Nodejs 运行像 demo.js 般调用 API 接口的 js 脚本：
 
 ```js
 // demo.js文件，已经写了 .sited 或 .sited.xml 文件路径
@@ -100,7 +100,7 @@ node /path/to/node_modules/sited_test/bin.js <sitedPath> [<key>]
 # key(可选): 用于在搜索节点上搜索的关键词字符串，如果没输入，会使用 bin.js 内置的关键词
 ```
 
-或者 C. 其实，在 VS Code 上编辑 sited 插件文件时用 [Code Runner 插件](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) 或者内置的调试器来调用 Node 是很快的。
+或者 C. 其实，在 VS Code 上编辑 sited 插件文件时用 [Code Runner 插件](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) 或者内置的调试器来调用 Nodejs 是很快的。
 
 a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动 Code Runner，直接测试插件，不需要填写插件路径，会通过 \$fullFileName 识别。
 
@@ -158,7 +158,7 @@ Examples:
 
 -   `npm run test`: 在命令行界面项目文件夹下，运行该代码，可以测试样本 sited 插件并显示结果在控制台
 -   `npm run clean`: 在命令行界面项目文件夹下，运行该代码，可以删除运行项目后生成的日志文件和缓存文件夹，前提要已通过 `npm i rimraf -g` 安装 rimraf 命令
--   控制项目文件夹下'files'文件夹下 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 生成的配置，见 index.js 文件
+-   控制本 README_CN 文件旁边的'files'文件夹里的 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 的生成的配置，见 index.js 文件
 
 ---
 
@@ -176,7 +176,7 @@ Examples:
 
 ## 致谢
 
-### 里面 lib 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
+### 里面 'lib' 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
 
 ## 友链
 
@@ -187,3 +187,5 @@ Examples:
 -   [DDCat SiteD](https://github.com/Yinr/DDCa-SiteD.vscode-ext) VS Code 扩展插件，对 .sited 和 .sited.xml 文件识别为 SiteD 语言，提供语法高亮
 
 -   [generators-sited-plugin](https://github.com/htynkn/generators-sited-plugin) Yeoman 生成器快速初始化项目
+
+-   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD 引擎 Python 版、SiteD 插件测试工具
