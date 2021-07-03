@@ -2,7 +2,7 @@
 # Author:wistn
 # since:2021-03-11
 # LastEditors:Do not edit
-# LastEditTime:2021-03-14
+# LastEditTime:2021-07-03
 # Description: github release and Node.js Package
 #
 
@@ -39,6 +39,7 @@ jobs:
                       *.tgz
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - run: publish
+            - name: publish
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+              run: npm publish

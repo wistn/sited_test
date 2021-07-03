@@ -1,9 +1,6 @@
 *
 !/.github/
 !/.github/**
-!/files/
-!/lib/
-!/lib/*.js
 !/bin.js
 !/demo.js
 !/demo.sited.xml

@@ -1,6 +1,6 @@
 # sited_test
 
-SiteD Engine for Node JavaScript version, SiteD plugin testing tool, for SiteD developers testing their own plugins on computer/desktop platform.
+SiteD plugin testing tool for Node JavaScript version, for SiteD developers testing their own plugins on computer/desktop platform.
 
 [ [中文说明](README_CN.md)]
 
@@ -9,6 +9,7 @@ SiteD Engine for Node JavaScript version, SiteD plugin testing tool, for SiteD d
 ## Features
 
 -   To automatically test SiteD plugin on Windows/Linux/macOS
+-   Need [sited_js](https://github.com/wistn/sited_js) for below:
 -   Support `schema0/1/2`
 -   Support running `buildUrl`, `parseUrl(CALL::)`, `parse(get/post/@null)`, `require(include online js library)`
 -   Support `header(cookie/referer)`, `ua` configurations
@@ -23,7 +24,7 @@ SiteD Engine for Node JavaScript version, SiteD plugin testing tool, for SiteD d
 * Outputs nodes' data to console on Nodejs.
 * @param sitedPath: A string of .sited or .sited.xml file's path, advises to absolute path.
 * @param key: A keyword string that is used for searching on search node.
-* @param callback: Outputs the entrance test functions of home/search/book node.
+* @param callback: Outputs the entrance test functions of home/search/book node etc.
 * @param nodeName@doTest@home_test: The string 'hots', 'updates' or 'tags', which starts test function of hots/updates/tags node.
 * @param bookUrl@book_test: Url argument of book node function, for test of book node alone.
 */
@@ -48,7 +49,7 @@ sited_test(
 
 ---
 
-### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Todo](#Todo)|[SpecialThanks](#SpecialThanks)|[Links](#Links)|[CHANGELOG.md](CHANGELOG.md)]
+### [ [Features](#Features)|[ API ](#API)|[Usage](#Usage)|[Configuration](#Configuration)|[Dependencies](#Dependencies)|[Links](#Links)|[CHANGELOG.md](CHANGELOG.md)]
 
 ## Usage
 
@@ -62,7 +63,7 @@ A. Uses Nodejs to run a js script like demo.js which requires the API within the
     var { sited_test, LogWriter } = require('./index');
     var path = require('path');
     var sitedPath = path.resolve(__dirname, 'demo.sited.xml');
-    var key = 'we';
+    var key = '我们';
     await sited_test(
         sitedPath,
         key,
@@ -118,11 +119,14 @@ or b. You can start debugging (sited_test) when editor focuses sited plugin file
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "sited_test",
             "type": "node",
             "request": "launch",
-            "name": "sited_test",
+            // "cwd": "${fileDirname}",
             "program": "/path/to/node_modules/sited_test/bin.js",
-            "args": ["${file}", "searchword"]
+            "args": ["${file}", "searchword"],
+            // "stopOnEntry": true,
+            "console": "internalConsole" // internalConsole integratedTerminal
         }
     ]
 }
@@ -157,8 +161,6 @@ Examples:
 ## Configuration
 
 -   `npm run test`: Within the project directory on CLI, run this code, will test a demo sited plugin and output result to console.
--   `npm run clean`: Within the project directory on CLI, run this code, will delete the log files and cache directory which made after running the project, only you had installed rimraf with `npm i rimraf -g` firstly.
--   Configuration which controls making of sited_log.txt/sited_error.txt/sited_print.txt and sited (cache directory) under the 'files' dir beside this README file, see in index.js file.
 
 ---
 
@@ -166,17 +168,9 @@ Examples:
 
 -   [Nodejs](https://nodejs.org/en/) 12 or above, must support ES2018+
 
----
-
-## Todo
-
--   Support login node
+-   [sited_js](https://github.com/wistn/sited_js) SiteD Engine for Node JavaScript version
 
 ---
-
-## SpecialThanks
-
-### The 'lib' library(excludes main_res_raw_xx.js) is totally translated from big parts of Noear's open source [SiteD Engine](https://github.com/noear/SiteD) v35 APP JAVA code to JavaScript language by me. Thank you!
 
 ## Links
 
@@ -188,4 +182,4 @@ Examples:
 
 -   [generators-sited-plugin](https://github.com/htynkn/generators-sited-plugin): Yeoman generator for sited plugin.
 
--   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD Engine for Python version, SiteD plugin testing tool.
+-   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD plugin testing tool for Python version.

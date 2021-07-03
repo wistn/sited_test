@@ -7,9 +7,6 @@
     },
     "scripts": {
         "test": "node demo.js",
-        "clean": "rimraf files/sited files/sited_*.txt files/logcat_stdout.txt",
-        "lint": "./node_modules/.bin/eslint '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js'",
-        "listen_format": "onchange '{bin,demo,index}.js' 'lib/{[^m],m[^a]}*.js' -- prettier --write {{changed}}",
         "binWithoutArgv": "node bin.js",
         "mybin": "node mybin.js"
     },
@@ -21,15 +18,13 @@
     ],
     "author": "wistn <wistn@qq.com> (https://github.com/wistn)",
     "license": "Apache-2.0",
-    "description": "SiteD Engine for javascript version, SiteD plugin testing tool, for SiteD developers testing their own plugins on computer/desktop platform.",
+    "description": "SiteD plugin testing tool for Node JavaScript version, for SiteD developers testing their own plugins on computer/desktop platform.",
     "repository": {
         "type": "git",
         "url": "https://github.com/wistn/sited_test.git"
     },
     "homepage": "https://github.com/wistn/sited_test",
     "files": [
-        "/files/.gitignore",
-        "/lib/*.js",
         "/bin.js",
         "/demo.js",
         "/demo.sited.xml",
@@ -41,13 +36,11 @@
         "README*"
     ],
     "dependencies": {
-        "axios": "^0.21.1",
-        "cheerio": "^1.0.0-rc.5",
-        "iconv-lite": "^0.5.2",
-        "qs": "^6.9.6",
+        "sited_js": "^1.4.1",
         "yargs": "^15.4.1"
     },
     "devDependencies": {
+        "axios": "^0.21.1",
         "eslint": "^7.28.0",
         "eslint-config-prettier": "^7.2.0",
         "eslint-config-standard": "^16.0.2",
@@ -57,5 +50,8 @@
         "eslint-plugin-promise": "^4.3.1",
         "eslint-plugin-standard": "^5.0.0",
         "prettier": "^2.2.1"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
     }
 }

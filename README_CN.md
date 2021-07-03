@@ -1,6 +1,6 @@
 # sited_test
 
-SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者在电脑/桌面平台测试自己的插件。
+SiteD 插件测试工具 Node.js 版，用于多多猫插件者在电脑/桌面平台测试自己的插件。
 
 [ [README-EN](README.md)]
 
@@ -9,6 +9,7 @@ SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者�
 ## 特性
 
 -   在 Windows/Linux/macOS 上自动测试 SiteD 插件
+-   实现以下需要 [sited_js](https://github.com/wistn/sited_js):
 -   支持 `schema0/1/2`
 -   支持运行 `buildUrl`, `parseUrl(CALL::)`, `parse(get/post/@null)`, `require(含网络 js 库)`
 -   支持 `header(cookie/referer)`, `ua` 配置
@@ -23,7 +24,7 @@ SiteD 引擎 Node.js 版、SiteD 插件测试工具，用于多多猫插件者�
 * 在 Nodejs 环境输出节点数据到控制台
 * @param sitedPath: .sited或.sited.xml文件路径, 建议填绝对路径
 * @param key: 用于在搜索节点上搜索的关键词字符串
-* @param callback: 输出home/search/book节点的入口测试函数
+* @param callback: 输出home/search/book等节点的入口测试函数
 * @param nodeName@doTest@home_test: 字符串 'hots', 'updates' 或者 'tags', 用于开始hots/updates/tags节点的测试函数
 * @param bookUrl@book_test: book节点函数的url参数, 用于book节点单独测试
 */
@@ -48,7 +49,7 @@ sited_test(
 
 ---
 
-### [[特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[待办](#待办)|[致谢](#致谢)|[友链](#友链)|[CHANGELOG.md](CHANGELOG.md)]
+### [ [特性](#特性)|[应用接口](#应用接口)|[使用](#使用)|[配置](#配置)|[依赖](#依赖)|[友链](#友链)|[CHANGELOG.md](CHANGELOG.md)]
 
 ## 使用
 
@@ -118,11 +119,14 @@ a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "sited_test",
             "type": "node",
             "request": "launch",
-            "name": "sited_test",
+            // "cwd": "${fileDirname}",
             "program": "/path/to/node_modules/sited_test/bin.js",
-            "args": ["${file}", "搜索词"]
+            "args": ["${file}", "搜索词"],
+            // "stopOnEntry": true,
+            "console": "internalConsole" // internalConsole integratedTerminal
         }
     ]
 }
@@ -157,8 +161,6 @@ Examples:
 ## 配置
 
 -   `npm run test`: 在命令行界面项目文件夹下，运行该代码，可以测试样本 sited 插件并显示结果在控制台
--   `npm run clean`: 在命令行界面项目文件夹下，运行该代码，可以删除运行项目后生成的日志文件和缓存文件夹，前提要已通过 `npm i rimraf -g` 安装 rimraf 命令
--   控制本 README_CN 文件旁边的'files'文件夹里的 sited_log.txt/sited_error.txt/sited_print.txt 和 sited(缓存文件夹) 的生成的配置，见 index.js 文件
 
 ---
 
@@ -166,17 +168,9 @@ Examples:
 
 -   [Nodejs](https://nodejs.org/en/) 12 或以上，须要支持 ES2018+
 
----
-
-## 待办
-
--   支持 login 节点
+-   [sited_js](https://github.com/wistn/sited_js) SiteD 引擎 Node.js 版
 
 ---
-
-## 致谢
-
-### 里面 'lib' 库（不含 main_res_raw_xx.js）是我将 Noear 开源的 [SiteD 引擎](https://github.com/noear/SiteD) v35 容器大部分 JAVA 代码翻译成的 JavaScript 语言。感谢！
 
 ## 友链
 
@@ -188,4 +182,4 @@ Examples:
 
 -   [generators-sited-plugin](https://github.com/htynkn/generators-sited-plugin) Yeoman 生成器快速初始化项目
 
--   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD 引擎 Python 版、SiteD 插件测试工具
+-   [sited_test_py](https://github.com/wistn/sited_test_py) SiteD 插件测试工具 Python 版
