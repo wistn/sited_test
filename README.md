@@ -105,7 +105,7 @@ or C. By the way, using [Code Runner extension](https://marketplace.visualstudio
 
 a. You can start Code Runner when editor focuses sited plugin file, after configuring Code Runner to execute .sited and .sited.xml as node command below, test the plugin directly, need not to write the plugin path, it will be identified by \$fullFileName.
 
-```json
+```jsonc
 "code-runner.executorMapByGlob": {
     "*.{sited,sited.xml}": "node /path/to/node_modules/sited_test/bin.js $fullFileName key"
 }
@@ -114,7 +114,7 @@ a. You can start Code Runner when editor focuses sited plugin file, after config
 
 or b. You can start debugging (sited_test) when editor focuses sited plugin file, after adding a debug configure to execute as node command below, test the plugin directly, need not to write the plugin path, it will be identified by \${file}.If you want to VS Code set breakpoints and pause in js code of plugin xml file, must add `debugger;` statements outside global functions and in every function you want to pause.
 
-```json
+```jsonc
 "launch": {
     "version": "0.2.0",
     "configurations": [

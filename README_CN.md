@@ -105,7 +105,7 @@ node /path/to/node_modules/sited_test/bin.js <sitedPath> [<key>]
 
 a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动 Code Runner，直接测试插件，不需要填写插件路径，会通过 \$fullFileName 识别。
 
-```json
+```jsonc
 "code-runner.executorMapByGlob": {
     "*.{sited,sited.xml}": "node /path/to/node_modules/sited_test/bin.js $fullFileName key"
 }
@@ -114,7 +114,7 @@ a. 配置 Code Runner 对.sited 和 .sited.xml 文件通过以下 node 命令运
 
 或者 b. 增加新的调试配置通过以下 node 命令运行，就可以在编辑器当前焦点所处 sited 插件文件时启动调试(sited_test)，直接测试插件，不需要填写插件路径，会通过 \${file} 识别。想要 VS Code 对插件 xml 文件里面的 js 代码打断点和暂停，须要在全局函数外面和每一个想暂停的函数里添加 `debugger;` 声明。
 
-```json
+```jsonc
 "launch": {
     "version": "0.2.0",
     "configurations": [

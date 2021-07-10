@@ -50,7 +50,7 @@ exports = module.exports = {
             );
             async function doTest(nodeName, cb) {
                 if (!source[nodeName].name) {
-                    console.log(nodeName + '节点不存在');
+                    console.log(nodeName + '节点不在插件里');
                     await cb();
                     return;
                 }
@@ -130,9 +130,10 @@ exports = module.exports = {
                 }
             );
         }
+
         async function search_test(cb) {
             if (!source.search.name) {
-                console.log('search节点不存在');
+                console.log('search节点不在插件里');
                 await cb();
                 return;
             }
@@ -207,9 +208,10 @@ exports = module.exports = {
                 }
             );
         }
+
         async function tag_test(tagUrl, from_where, cb) {
             if (!source._tag.name) {
-                console.log('tag节点不存在');
+                console.log('tag节点不在插件里');
                 await cb();
                 return;
             }
@@ -270,9 +272,16 @@ exports = module.exports = {
                 }
             );
         }
+
         async function book_test(bookUrl, from_where, cb) {
-            if (!source._book.name) {
-                console.log('book节点不存在');
+            if (bookUrl.startsWith('sited://')) {
+                console.log('结果是用app打开 ' + bookUrl);
+                await cb();
+                return;
+            }
+            if (!source.isMatch(bookUrl)) {
+                console.log('book节点提示：此内容需要新的插件，现在安装？');
+                console.log('暂时没有合适的插件');
                 await cb();
                 return;
             }
@@ -280,17 +289,20 @@ exports = module.exports = {
             console.log(
                 '\nbook节点<' +
                     from_where +
-                    '> ' +
-                    config.onParse +
-                    '(或[若有]buildUrl/parseUrl)参数url为 ' +
+                    '> parse(或[若有]buildUrl/parseUrl)参数url为 ' +
                     bookUrl
             );
-            if (bookUrl.startsWith('sited://') || config.isWebrun()) {
+            if (config.isWebrun()) {
                 console.log('结果是用app打开 ' + config.getWebUrl(bookUrl));
                 await cb();
                 return;
             }
             async function doTest() {
+                if (!source._book.name) {
+                    console.log('book节点不在插件里'); // 对应的多多猫提示 网络请求出错///^_^....... R.string.error_net
+                    await cb();
+                    return;
+                }
                 console.log(
                     '\n获取book[dtype=' +
                         String(dtype) +
@@ -436,9 +448,10 @@ exports = module.exports = {
                 );
             }
         }
+
         async function section_test(sectionUrl, from_where, cb) {
-            if (!source._section.name) {
-                console.log('section节点不存在');
+            if (sectionUrl.startsWith('sited://')) {
+                console.log('结果是用app打开 ' + sectionUrl);
                 await cb();
                 return;
             }
@@ -446,17 +459,20 @@ exports = module.exports = {
             console.log(
                 '\nsection节点<' +
                     from_where +
-                    '> ' +
-                    config.onParse +
-                    '(或[若有]buildUrl/parseUrl)参数url为 ' +
+                    '> parse(或[若有]buildUrl/parseUrl)参数url为 ' +
                     sectionUrl
             );
-            if (sectionUrl.startsWith('sited://') || config.isWebrun()) {
+            if (config.isWebrun()) {
                 console.log('结果是用app打开 ' + config.getWebUrl(sectionUrl));
                 await cb();
                 return;
             }
             async function doTest() {
+                if (!source._section.name) {
+                    console.log('section节点不在插件里');
+                    await cb();
+                    return;
+                }
                 console.log(
                     '\n获取section[dtype=' +
                         String(dtype) +
@@ -510,9 +526,10 @@ exports = module.exports = {
                 }
             );
         }
+
         async function subtag_test(subtagUrl, from_where, cb) {
             if (!source._subtag.name) {
-                console.log('subtag节点不存在');
+                console.log('subtag节点不在插件里');
                 await cb();
                 return;
             }
@@ -561,6 +578,7 @@ exports = module.exports = {
                 }
             );
         }
+
         await callback(
             home_test,
             search_test,
